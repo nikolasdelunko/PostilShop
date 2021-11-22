@@ -26,6 +26,8 @@ const Catalog = () => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+	console.log(products)
+
 	return (
 		<Box className={classes.container}>
 			{
