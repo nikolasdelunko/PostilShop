@@ -51,7 +51,7 @@ const ActionButtons = () => {
 					// eslint-disable-next-line max-len
 					const activeColorName = allColors.filter(i => i._id === activeProduct.color)
 					// eslint-disable-next-line no-console
-					console.log('ActiveSizeName',activeColorName)
+					// console.log('ActiveSizeName',activeColorName)
 					handleShoppingBag.add({
 						...activeProduct,
 						size:activeSizeName[0].size.name,

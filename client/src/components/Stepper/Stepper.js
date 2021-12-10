@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
@@ -10,6 +11,8 @@ import Step1 from './Step1'
 import Checkout from '../PayCard/checkout'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import CheckoutForm from '../PayCard/CheckoutForm'
+
+// import CartPageFragments from './CartPageFragments'
 
 
 const steps = ['Shopping Bag', 'Shipping Details', 'Payment Options']
@@ -68,6 +71,14 @@ const HorizontalLinearStepper = () => {
 				</React.Fragment>
 			)}
 			{activeStep === 0 && (
+
+			// <CartPageFragments
+			// 	content={<Step1/>} 
+			// 	activeStep={activeStep}
+			// 	handleBack={handleBack}
+			// 	handleNext={handleNext}
+			// />
+
 				<React.Fragment>
 					<Typography
 						sx={{ mt: 2, mb: 1 }}
@@ -82,17 +93,25 @@ const HorizontalLinearStepper = () => {
 							onClick={handleBack}
 							sx={{ mr: 1 }}
 						>
-              Back
+							Back
 						</Button>
 						<Box sx={{ flex: '1 1 auto' }} />
 
 						<Button variant={'contained'} onClick={handleNext} style={{width: '200px', marginRight: '4rem'}}>
-							NEXT
+						NEXT
 						</Button>
 					</Box>
 				</React.Fragment>
 			)}
 			{activeStep === 1 && (
+
+			// <CartPageFragments
+			// 	content={<CheckoutForm handleNext={handleNext} />} 
+			// 	activeStep={activeStep}
+			// 	handleBack={handleBack}
+			// 	handleNext={handleNext}
+			// />
+
 				<React.Fragment>
 					<Typography
 						sx={{ mt: 2, mb: 1 }}
@@ -119,6 +138,14 @@ const HorizontalLinearStepper = () => {
 				</React.Fragment>
 			)}
 			{activeStep === 2 && (
+
+			// <CartPageFragments
+			// 	content={<Checkout />} 
+			// 	activeStep={activeStep}
+			// 	handleBack={handleBack}
+			// 	handleNext={handleNext}
+			// />
+
 				<React.Fragment>
 					<Typography
 						sx={{ mt: 2, mb: 1 }}

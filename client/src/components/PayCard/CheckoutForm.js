@@ -5,8 +5,6 @@ import ShipAdr from '../../components/PayCard/ShipAdr'
 import Summary from '../../components/PayCard/Summary'
 import PropTypes from 'prop-types'
 
-
-
 const CheckoutForm = ({handleNext}) => {
 
 	return (

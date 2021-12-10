@@ -1,5 +1,5 @@
 const getShoppingBag = () => (state) => state.shoppingBag.data
 
-export default {
-	getShoppingBag,
-}
+const def = {getShoppingBag}
+
+export default def

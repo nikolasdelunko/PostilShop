@@ -4,7 +4,7 @@ import linksSlice from './Links/'
 import categorySlice from './Category/categorySlice'
 import sliderSlice from './Slider'
 import modalSlice from './Modal/modalSlice'
-import shoppingBagSlice from './ShoppingBag/shoppingBagSlice'
+import shoppingBag from './ShoppingBag/'
 import productSlice from './Product/productSlice'
 import filterSlice from './Filter'
 import settingsSlice from './Settings'
@@ -19,7 +19,7 @@ const store = configureStore({
 		links: linksSlice,
 		category: categorySlice,
 		modal: modalSlice,
-		shoppingBag: shoppingBagSlice,
+		shoppingBag,
 		user: userSlice,
 		product: productSlice,
 		filter: filterSlice,
@@ -43,6 +43,7 @@ const store = configureStore({
 					'favorites/setLoading',
 					'favorites/setFavorites',
 					'snackBar/snackToggle',
+					'shoppingBag/setData',
 				],
 			},
 		}),

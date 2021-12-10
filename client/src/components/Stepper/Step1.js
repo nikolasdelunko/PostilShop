@@ -9,15 +9,15 @@ const Step1 = () => {
 	const classes = useStyles()
 	const { shoppingBag, totalPrice } = useHandleShoppingBag()
 
-
 	return (
 		<div className={classes.containerStep1}>
 			<div className={classes.cards}>
 				{shoppingBag?.length > 0 && <>
 					<Typography fontSize={32} variant={'h2'} className={classes.titleStep1}>Shopping Bag</Typography>
 					<div>
-						{shoppingBag
-							?.map((item, key) => <ShoppingBagCard key={key} item={item}/>)}
+						{shoppingBag.map(item =>
+							<ShoppingBagCard key={item.product._id} item={item}/>)
+						}
 					</div>
 				</>}
 			</div>

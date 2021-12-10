@@ -22,14 +22,14 @@ const ProductDetails = () => {
 
 	useEffect(() => {
 		// eslint-disable-next-line no-console
-		console.log('LOADDDINNNNGGG FAV')
+		// console.log('LOADDDINNNNGGG FAV')
 		favoritesOperations.fetchFavorites(favorites)(dispatch)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [favorites.length])
 
 	useEffect(() => {
 		// eslint-disable-next-line no-console
-		console.log('LOADDDINNNNGGG ID')
+		// console.log('LOADDDINNNNGGG ID')
 		dispatch(ProductOperations.fetchProductUrl(id))
 
 		return function cleanup(){
@@ -40,7 +40,7 @@ const ProductDetails = () => {
 	useEffect(() => {
 		setIsLoading(true)
 		// eslint-disable-next-line no-console
-		console.log('LOADDDINNNNGGG PARENT')
+		// console.log('LOADDDINNNNGGG PARENT')
 		if (activeProduct) {
 			dispatch(ProductOperations.fetchAllColors(parent._id))
 			dispatch(ProductOperations.fetchSizes({

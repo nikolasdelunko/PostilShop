@@ -13,7 +13,7 @@ const Summary = () => {
 	useEffect(() => {
 		Promise.all(
 			shoppingBag.map(
-				p => axios(`api/products/${p._id}`)
+				prod => axios(`api/products/${prod.product._id}`)
 			)
 		).then(res => {
 			const products = res.map(({data}) => data)
@@ -21,7 +21,6 @@ const Summary = () => {
 		})
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
 
 	return (
 		<Box sx={{
@@ -40,8 +39,10 @@ const Summary = () => {
 			</Typography>
 			<div style={border}/>
 			{parent?.map((item) => (
-				// eslint-disable-next-line react/jsx-key
-				<Box style={SummCarts}>
+				<Box 
+					key={item.variants._id}
+					style={SummCarts}
+				>
 					<Box style={SummBox}>
 						<img src={item.variants.imageUrls[0]} style={PhotoSumm} alt={'image'}/>
 						<Box style={SummText}>
