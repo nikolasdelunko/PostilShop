@@ -1,7 +1,7 @@
-import axios from 'axios'
+import {FetchData} from './base'
 
-const getLinks = () => {
-	return axios('/api/links')
-}
+const api = new FetchData()
+
+const getLinks = () => api.get('/api/links')
 
 export default {getLinks}

@@ -8,6 +8,7 @@ import CustomInput from '../setting/customElements/CustomInput'
 import CustomCheckBox from '../setting/customElements/CustomCheckBox'
 import CustomSwitch from '../setting/customElements/CustomSwitch'
 import useAuth from '../../../utils/customHooks/useAuth'
+import {snackActions} from '../../../utils/configurators/SnackBarUtils'
 
 const SignInForm = () => {
 	const [serverResult, setServerResult] = useState(null)
@@ -39,10 +40,14 @@ const SignInForm = () => {
 				onSubmit={async (values) => {
 					try {
 						await register(values)
-						setServerResult({ success: 'You successfully registered' })
 					}
 					catch (err) {
-						setServerResult({ error: Object.values(err.response.data)[0] })
+						const errors = Object.values(err)
+						if(errors.length)
+						{
+							setServerResult({error: errors})
+							errors.map(err => snackActions.warning(err))
+						}
 					}
 				}}
 			>
@@ -171,15 +176,12 @@ const SignInForm = () => {
 
 							{serverResult && serverResult.error && (
 								<Box className={classes.formStatusBlock}>
-									<p className={classes.error}>{serverResult.error}</p>
+									{serverResult.error.map((oneErr,index) => (
+										<p key={index} className={classes.error}>{oneErr}</p>
+									))}
 								</Box>
 							)}
 
-							{serverResult && serverResult.success && (
-								<Box className={classes.formStatusBlock}>
-									<p className={classes.success}>{serverResult.success}</p>
-								</Box>
-							)}
 							<Box sx={{ display: 'flex', justifyContent: 'center' }}>
 								<Button
 									data-testid='submit'

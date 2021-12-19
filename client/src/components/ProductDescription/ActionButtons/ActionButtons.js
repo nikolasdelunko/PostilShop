@@ -5,26 +5,24 @@ import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
 import { useDispatch, useSelector } from 'react-redux'
 import { ProductSelector } from '../../../store/product'
 import modalActions from '../../../store/modal'
-import { favoritesOperations, favoritesSelectors } from '../../../store/favorites'
+import { favoritesOperations} from '../../../store/favorites'
 import LoginModal from '../../Modal/LoginModal/LoginModal'
 import useHandleShoppingBag from '../../../utils/customHooks/useHandleShoppingBag'
 import { userSelectors } from '../../../store/user'
-import useSnack from '../../../utils/customHooks/useSnack'
 import { useTheme } from '@mui/styles'
+
+import { snackActions } from '../../../utils/configurators/SnackBarUtils'
 
 const ActionButtons = () => {
 	const handleShoppingBag = useHandleShoppingBag()
 	const activeProduct = useSelector(ProductSelector.getProduct())
 	const dispatch = useDispatch()
 	const user = useSelector(userSelectors.getData())
-	// eslint-disable-next-line no-unused-vars
-	const favorites = useSelector(favoritesSelectors.getFavorites())
 	const handleOpen = (content) => dispatch(modalActions.modalToggle(content))
 	const favoritesStorage = JSON.parse(localStorage.getItem('favorites')) || []
 	const allSizes = useSelector(ProductSelector.allSizes())
 	const allColors = useSelector(ProductSelector.allColors())
 	const parent = useSelector(ProductSelector.getParent())
-	const { handleSnack } = useSnack()
 	const theme = useTheme()
 
 	const addToFavorites = () => {
@@ -65,9 +63,8 @@ const ActionButtons = () => {
 						color: activeColorName[0].name,
 						title: parent.name,
 						description: parent.description
-
 					})
-					handleSnack({ message: 'Successfully added to shopping bag', style: 'success' })
+					snackActions.success('+ 1 product added')
 				}}
 			>
 				ADD TO BAG
@@ -77,7 +74,8 @@ const ActionButtons = () => {
 				sx={{
 					padding: { lg: '22px', md: '16px', sm: '12px', xs: '9px' },
 					[theme.breakpoints.between('766', '860')]: { padding: '12px' }
-				}} variant={'contained'}
+				}}
+				variant={'contained'}
 				onClick={!user
 					? async () => {
 						await handleOpen(<LoginModal />)

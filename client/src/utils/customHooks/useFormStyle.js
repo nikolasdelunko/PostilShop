@@ -68,6 +68,7 @@ export const useFormStyle = makeStyles({
 	},
 	formStatusBlock: {
 		display: 'flex',
+		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingTop: '10px',
@@ -76,9 +77,11 @@ export const useFormStyle = makeStyles({
 	error: {
 		color: 'red',
 		fontSize: 15,
+		margin: '10px 0 0',
 	},
 	success: {
 		color: 'green',
-		fontSize: 15
+		fontSize: 15,
+		margin: '10px 0 0',
 	}
 })

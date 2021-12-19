@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import CustomInput from '../setting/customElements/CustomInput'
 import CustomSwitch from '../setting/customElements/CustomSwitch'
 import useAuth from '../../../utils/customHooks/useAuth'
+import {snackActions} from '../../../utils/configurators/SnackBarUtils'
 
 const LoginForm = () => {
 	const classes = useFormStyle()
@@ -22,12 +23,14 @@ const LoginForm = () => {
 			}}
 			validationSchema={LOGIN_SCHEMA}
 
-			onSubmit={values => {
+			onSubmit={async (values) => {
 				try {
-					login(values)
+					await login(values)
 				}
 				catch (err) {
-					setServerResult({ error: 'wrong login or password' })
+					const text = 'Wrong login or password'
+					setServerResult({ error: [text] })
+					snackActions.warning(text)
 				}
 			}}
 		>
@@ -90,13 +93,9 @@ const LoginForm = () => {
 
 						{serverResult && serverResult.error && (
 							<Box className={classes.formStatusBlock}>
-								<p className={classes.error}>{serverResult.error}</p>
-							</Box>
-						)}
-
-						{serverResult && serverResult.success && (
-							<Box className={classes.formStatusBlock}>
-								<p className={classes.success}>{serverResult.success}</p>
+								{serverResult.error.map((oneErr,index) => (
+									<p key={index} className={classes.error}>{oneErr}</p>
+								))}
 							</Box>
 						)}
 

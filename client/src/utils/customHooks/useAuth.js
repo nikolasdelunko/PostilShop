@@ -4,11 +4,11 @@ import { userOperations, userSelectors} from '../../store/user'
 import { loginUser, registerUser } from '../API/userAPI'
 import {subscribeTemlate} from '../emailTemplates'
 import modalActions from '../../store/modal'
-import useSnack from './useSnack'
+import {snackActions} from '../configurators/SnackBarUtils'
 
 const useAuth = () => {
 	const dispatch = useDispatch()
-	const {handleSnack} = useSnack()
+	// const {handleSnack} = useSnack()
 	const token = useSelector(userSelectors.getToken())
 	const checkToken = () => 
 	{
@@ -29,16 +29,14 @@ const useAuth = () => {
 		let formData = {...values}
 		const {rememberMe} = formData
 		delete (formData.rememberMe)
+	
 		const res = await loginUser(formData)
-		if (res.status === 200) {
+		if (res.data) {
 			//save token to store (and localStorage)
 			dispatch(userOperations.setToken({token: res.data.token, rememberMe}))
 			dispatch(modalActions.modalToggle(false))
-			handleSnack({message: 'You successfully Logged In', style: 'success'})
-			return true
+			snackActions.success('You successfully Logged In')
 		}
-		handleSnack({message: 'wrong login or password', style: 'warning'})
-		return false	
 	}
 
 	const register = async (values) => {
@@ -50,15 +48,11 @@ const useAuth = () => {
 		const {email: loginOrEmail,password,rememberMe} = formData
 		delete (formData.confirmPass)
 		delete (formData.rememberMe)
-		
 		const res = await registerUser(formData)
-		if (res.status === 200) {
-			const loginRes = await login({loginOrEmail,password,rememberMe})
-			handleSnack({message: 'You successfully registered', style: 'success'})
-			return loginRes
+		if (res.data) {
+			snackActions.success('You successfully registered')
+			await login({loginOrEmail,password,rememberMe})
 		}
-		handleSnack({message: 'Troubles with register', style: 'warning'})
-		return false
 	}
 	return {checkToken, login, register}
 }

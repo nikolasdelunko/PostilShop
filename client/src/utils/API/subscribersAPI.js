@@ -1,17 +1,18 @@
-import axios from 'axios'
+import {FetchData} from './base'
 import {subscribeTemlate, unSubscribeTemlate} from '../emailTemplates'
 
-export const addSubscribe = (email) => axios.post('/api/subscribers',{
+const api = new FetchData('/api/subscribers/')
+
+export const addSubscribe = (email) => api.post('',{
 	email: email,
 	letterSubject: 'Your subscription promo code',
 	letterHtml: subscribeTemlate(email),
 })
 
-export const getSubscriptionByEmail = (email) => 
-	axios.get(`/api/subscribers/${email}`)
+export const getSubscriptionByEmail = (email) => api.get(`${email}`)
 
-export const changeSubscription = (obj) => axios.
-	put(`/api/subscribers/email/${obj.email}`,{
+export const changeSubscription = (obj) => api.
+	put(`email/${obj.email}`,{
 		...obj,
 		letterSubject: obj.enabled === true ? 'Subscription activation' : 'Subscription cancel',
 		letterHtml: obj.enabled === true 
