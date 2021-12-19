@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import settingsApi from '../../utils/API/settingsApi'
+import {getSettings} from '../../utils/API/settingsApi'
 import { returnMode } from '../../utils/helpers/stringHelper'
 
 const initialState = {
@@ -10,14 +10,12 @@ const initialState = {
 
 export const fetchSettings = createAsyncThunk(
 	'settings/fetchSettings',
-	async (_, { rejectWithValue }) => {
-		try {
-			const mode = returnMode()
-			const response = await settingsApi.getSettings()
+	async () => {
+		const mode = returnMode()
+		const response = await getSettings()
+		if(response.data)
+		{
 			return response.data[0][mode].settings
-		}
-		catch (error) {
-			return rejectWithValue(error.message)
 		}
 	}
 )

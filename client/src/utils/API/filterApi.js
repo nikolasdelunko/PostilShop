@@ -1,7 +1,5 @@
-import axios from 'axios'
+import {FetchData} from './base'
 
-const getFiltersByType = (type) =>  axios(`/api/filters/${type}`)
+const api = new FetchData('/api/filters')
 
-export default {
-	getFiltersByType,
-}
+export const getFiltersByType = (type) => api.get(`/${type}`)

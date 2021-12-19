@@ -1,6 +1,9 @@
-import axios from 'axios'
+// import axios from 'axios'
+import {FetchData} from './base'
 
-const getSettings = () => axios('/api/configs')
+const api = new FetchData('/api/configs')
+
+export const getSettings = () => api.get('')
 
 export default {
 	getSettings,

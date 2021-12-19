@@ -8,7 +8,6 @@ import {snackActions} from '../configurators/SnackBarUtils'
 
 const useAuth = () => {
 	const dispatch = useDispatch()
-	// const {handleSnack} = useSnack()
 	const token = useSelector(userSelectors.getToken())
 	const checkToken = () => 
 	{

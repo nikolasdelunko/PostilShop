@@ -8,10 +8,10 @@ import ProductCard from '../../components/ProductCard/ProductCard'
 import BackdropLoader from '../../components/UI/BackdropLoader/BackdropLoader'
 import Loader from '../../components/UI/Loader/Loader'
 import productActions, { productsSelectors } from '../../store/products'
-import filterApi from '../../utils/API/filterApi'
+import {getFiltersByType} from '../../utils/API/filterApi'
 import productsAPI from '../../utils/API/productsAPI'
 import UseSeo from '../../utils/customHooks/useSeo'
-import UseSnack from '../../utils/customHooks/useSnack'
+// import UseSnack from '../../utils/customHooks/useSnack'
 import MatchedProductsTitle from './SearchComponent/MatchedProductsTitle'
 
 
@@ -42,7 +42,7 @@ const Search = () => {
 			/>
 		</Grid>
 	))
-	const { handleSnack } = UseSnack()
+	// const { handleSnack } = UseSnack()
 
 	const newProductsHandler = () => {
 		setHasMore(true)
@@ -62,10 +62,11 @@ const Search = () => {
 						if (data.length < perPage) {
 							setHasMore(false)
 						}
-					}).catch(err => {
-						handleSnack({ message: err, style: 'warning' })
-						dispatch(productActions.setAllProducts([]))
 					})
+					// .catch(err => {
+					// 	// handleSnack({ message: err, style: 'warning' })
+					// 	dispatch(productActions.setAllProducts([]))
+					// })
 			} else {
 				dispatch(productActions.setAllProducts([]))
 			}
@@ -89,15 +90,11 @@ const Search = () => {
 							setHasMore(false)
 						}
 					})
-					.catch((err) => {
-						setHasMore(true)
-						handleSnack({
-							message: err,
-							style: 'warning'
-						}
-						)
-						dispatch(productActions.setAllProducts([]))
-					})
+					// .catch((err) => {
+					// 	setHasMore(true)
+					// 	// handleSnack({message: err,	style: 'warning'})
+					// 	dispatch(productActions.setAllProducts([]))
+					// })
 			} else {
 				setHasMore(true)
 				dispatch(productActions.setAllProducts([]))
@@ -107,9 +104,10 @@ const Search = () => {
 	}
 
 	useEffect(() => {
-		filterApi.getFiltersByType('perPage')
+		getFiltersByType('perPage')
 			.then(resp => setPerPageArray(resp.data))
-			.catch(err => handleSnack({ message: err, style: 'warning' }))
+			// .catch(err => handleSnack({ message: err, style: 'warning' }))
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

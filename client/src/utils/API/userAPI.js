@@ -2,13 +2,11 @@ import axios from 'axios'
 
 import {FetchData} from './base'
 
-const api = new FetchData('')
+const api = new FetchData('/api/customers')
 
-// export const registerUser = (data) => axios.post('/api/customers/', data)
-export const registerUser = (data) => api.post('/api/customers', data)
+export const registerUser = (data) => api.post('', data)
 
-// export const loginUser = (data) => axios.post('/api/customers/login', data)
-export const loginUser = (data) => api.post('/api/customers/login', data)
+export const loginUser = (data) => api.post('/login', data)
 
 export const updateData = (data) => axios.put('/api/customers', data)
 

@@ -94,6 +94,8 @@ export class FetchData {
 						const { data } = reason.response
 						console.log('RESPONSE',data)
 						// reject(new Error(data && data.message))
+
+						//!! Прокидываю объект дальше, нас лучай, если сервер вернул ошибки (типа валидация форм)
 						reject(data)
 					}
 					else reject(reason)
@@ -127,8 +129,7 @@ export class FetchData {
 		if (
 			response &&
 			(
-				(response.status === 404 && 
-					!url.includes('/api/customers/login')) ||
+				response.status === 404 ||
 				response.status === 500 ||
 				(response.status === 401 &&
 					showError &&

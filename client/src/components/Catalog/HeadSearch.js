@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, } from '@mui/material'
-import filterApi from '../../utils/API/filterApi'
+import {getFiltersByType} from '../../utils/API/filterApi'
 import { filterSelectors } from '../../store/filter'
 import { useSelector } from 'react-redux'
 
@@ -22,12 +22,18 @@ const HeadSearch = () => {
 	}
 
 	const getPerPageFilters = async () => {
-		const pageRes = await filterApi.getFiltersByType('perPage')
-		setPerPageArray(pageRes.data)
+		const pageRes = await getFiltersByType('perPage')
+		if(pageRes.data)
+		{
+			setPerPageArray(pageRes.data)
+		}
 	}
 	const getSortByFilters = async () => {
-		const sortRes = await filterApi.getFiltersByType('sortBy')
-		setSortByArray(sortRes.data)
+		const sortRes = await getFiltersByType('sortBy')
+		if(sortRes.data)
+		{
+			setSortByArray(sortRes.data)
+		}
 	}
 
 	useEffect(()=> {

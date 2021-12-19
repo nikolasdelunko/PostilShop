@@ -11,8 +11,8 @@ export const addSubscribe = (email) => api.post('',{
 
 export const getSubscriptionByEmail = (email) => api.get(`${email}`)
 
-export const changeSubscription = (obj) => api.
-	put(`email/${obj.email}`,{
+export const changeSubscription = (obj) => api.put(
+	`email/${obj.email}`,{
 		...obj,
 		letterSubject: obj.enabled === true ? 'Subscription activation' : 'Subscription cancel',
 		letterHtml: obj.enabled === true 

@@ -3,26 +3,22 @@ import { useHistory } from 'react-router-dom'
 import { filterOperations, filterSelectors } from '../../store/filter'
 import { productsOperations } from '../../store/products'
 import { settingsSelectors } from '../../store/settings'
-import settingsApi from '../API/settingsApi'
+import {getSettings} from '../API/settingsApi'
 import { returnObjectWithoutZeroVal } from '../helpers/objectHelper'
 import { parseQueryStringWithNoZero, returnMode } from '../helpers/stringHelper'
-import UseSnack from './useSnack'
-
 
 const useFilterHandler = () => {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const isLaunchedByUser = useSelector(filterSelectors.getIsLaunchedByUser())
 	const settingsRedux = useSelector(settingsSelectors.getData())
-	const { handleSnack } = UseSnack()
 
-	const getSettings = async () => {
-		try {
-			const settingsRes = await settingsApi.getSettings()
+	const loadSettings = async () => {
+		const result = await getSettings()
+		if(result.data)
+		{
 			const mode = returnMode()
-			return settingsRes.data[0][mode]['settings']
-		} catch (err) {
-			handleSnack({ message: 'Settings request err', style: 'warning' })
+			return result.data[0][mode]['settings']
 		}
 	}
 
@@ -58,7 +54,7 @@ const useFilterHandler = () => {
 		//get settings here, becouse from redux return null - async
 		let settings
 		if (!settingsRedux) {
-			settings = await getSettings()
+			settings = await loadSettings()
 		} else {
 			settings = settingsRedux
 		}
