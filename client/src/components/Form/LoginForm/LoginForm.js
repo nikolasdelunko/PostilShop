@@ -24,10 +24,9 @@ const LoginForm = () => {
 			validationSchema={LOGIN_SCHEMA}
 
 			onSubmit={async (values) => {
-				try {
-					await login(values)
-				}
-				catch (err) {
+				const res = await login(values)
+				if(res.isError)
+				{
 					const text = 'Wrong login or password'
 					setServerResult({ error: [text] })
 					snackActions.warning(text)

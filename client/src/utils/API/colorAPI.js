@@ -1,7 +1,5 @@
-import axios from 'axios'
+import {FetchData} from './base'
 
-const getColors = () => axios('/api/colors')
+const api = new FetchData('/api/colors')
 
-export default {
-	getColors,
-}
+export const getColors = () => api.get('')

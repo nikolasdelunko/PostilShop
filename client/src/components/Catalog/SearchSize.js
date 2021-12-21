@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import {Box, FormControl, RadioGroup } from '@mui/material'
-import sizeAPI from '../../utils/API/sizeAPI'
+import {getSizes} from '../../utils/API/sizeAPI'
 
 import SearchSizeItem from './SearchSizeItem'
 
 const SearchSize = () => {
-	const [sizes, setSize] = useState()
+	const [sizes, setSize] = useState([])
 	const getSizeFilters = async () => {
-		const res = await sizeAPI.getSizes()
-		setSize(res.data)
+		const res = await getSizes()
+		if(!res.isError)
+		{
+			setSize(res.data)
+		}
 	}
 	useEffect(()=>{
 		getSizeFilters()

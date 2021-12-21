@@ -15,10 +15,10 @@ const useFilterHandler = () => {
 
 	const loadSettings = async () => {
 		const result = await getSettings()
-		if(result.data)
+		if(!result.isError)
 		{
 			const mode = returnMode()
-			return result.data[0][mode]['settings']
+			return result.data[0][mode]['settings'] || null
 		}
 	}
 

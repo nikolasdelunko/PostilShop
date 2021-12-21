@@ -20,7 +20,7 @@ const StyledAlert = styled(Alert)(() => ({
 const SubscribeForm = () => {
 	const handleSubmit = async ({ email }, formikFunctions) => {
 		const res = await addSubscribe(email)
-		if (res.data) {
+		if (!res.isError) {
 			snackActions.success('You successfully subscribed')
 			formikFunctions.resetForm()
 		}

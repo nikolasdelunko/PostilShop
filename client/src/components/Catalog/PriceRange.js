@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { FormControl, InputAdornment, OutlinedInput, Slider, Box, styled, Typography } from '@mui/material'
-import productsAPI from '../../utils/API/productsAPI'
+import {getMinMaxPrice} from '../../utils/API/productsAPI'
 import { useSelector } from 'react-redux'
 import { filterSelectors } from '../../store/filter'
 import useFilterHandler from '../../utils/customHooks/useFilterHandler'
-import UseSnack from '../../utils/customHooks/useSnack'
 
 const PriceRangeInput = styled(OutlinedInput)(() => ({
 	height: '22px',
@@ -25,7 +24,6 @@ const PriceRange = () => {
 	const { minPrice, maxPrice } = useSelector(filterSelectors.getFilters())
 	const [defaultMaxPrice, setDefaultMaxPrice] = useState(0)
 	const [value, setValue] = useState([0, 1000])
-	const { handleSnack } = UseSnack()
 
 	const rangeSelector = (event, newValue, activeThumb) => {
 		if (!Array.isArray(newValue)) {
@@ -43,12 +41,10 @@ const PriceRange = () => {
 	}
 
 	const getPriceFilters = async () => {
-		try {
-			const res = await productsAPI.getMinMaxPrice()
+		const res = await getMinMaxPrice()
+		if(!res.isError)
+		{
 			setDefaultMaxPrice(res.data[0].max)
-		}
-		catch (err) {
-			handleSnack({ message: 'Price range error', style: 'warning' })
 		}
 	}
 	useEffect(() => {

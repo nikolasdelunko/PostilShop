@@ -1,5 +1,5 @@
-import axios from 'axios'
+import {FetchData} from './base'
 
-const getCategories = () => axios('/api/catalog')
+const api = new FetchData('/api/catalog')
 
-export default { getCategories }
+export const getCategories = () => api.get('')

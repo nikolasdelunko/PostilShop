@@ -13,9 +13,9 @@ export const fetchSettings = createAsyncThunk(
 	async () => {
 		const mode = returnMode()
 		const response = await getSettings()
-		if(response.data)
+		if(!response.isError)
 		{
-			return response.data[0][mode].settings
+			return response?.data[0][mode].settings || null
 		}
 	}
 )

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import { SING_UP_SCHEMA } from '../setting/Schemes'
@@ -8,7 +9,7 @@ import CustomInput from '../setting/customElements/CustomInput'
 import CustomCheckBox from '../setting/customElements/CustomCheckBox'
 import CustomSwitch from '../setting/customElements/CustomSwitch'
 import useAuth from '../../../utils/customHooks/useAuth'
-import {snackActions} from '../../../utils/configurators/SnackBarUtils'
+// import {snackActions} from '../../../utils/configurators/SnackBarUtils'
 
 const SignInForm = () => {
 	const [serverResult, setServerResult] = useState(null)
@@ -38,15 +39,14 @@ const SignInForm = () => {
 				validationSchema={SING_UP_SCHEMA}
 
 				onSubmit={async (values) => {
-					try {
-						await register(values)
-					}
-					catch (err) {
-						const errors = Object.values(err)
+					const result = await register(values)
+					//only if errors happened
+					if(result.isError)
+					{
+						const errors = Object.entries(result.errors)
 						if(errors.length)
 						{
-							setServerResult({error: errors})
-							errors.map(err => snackActions.warning(err))
+							setServerResult({error: errors.map(err => err[1])})
 						}
 					}
 				}}

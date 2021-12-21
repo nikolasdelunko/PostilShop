@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getUserByToken , getUserOrders } from '../../utils/API/userAPI'
+import { getUserByToken } from '../../utils/API/userAPI'
+import { getCustomerOrders } from '../../utils/API/ordersAPI'
+import { getSubscriptionByEmail } from '../../utils/API/subscribersAPI'
 
 
 const initialState = {
@@ -15,16 +17,36 @@ export const fetchUser = createAsyncThunk(
 	'user/fetchUser',
 	async () => {
 		const response = await getUserByToken()
-		return response.data
+		// return (!response.isError) ?  : null
+		// return response.data
+		if(!response.isError)
+		{
+			if(response.data.email)
+			{
+				const {email} = response.data
+				const subscribeResp = await getSubscriptionByEmail(email, false)
+				return (subscribeResp.isError && subscribeResp.errors.message) 
+					? {...response.data, subscribe: true} 
+					: {...response.data, subscribe: false}
+			}
+			else
+			{
+				return response.data
+			}
+		}
+		else
+		{
+			return null
+		}
 	}
 )
-
 
 export const fetchUserOrders = createAsyncThunk(
 	'user/fetchUserOrders',
 	async () =>{
-		const response = await getUserOrders()
-		return response.data
+		const response = await getCustomerOrders()
+		return (!response.isError) ? response.data : null
+		// return response.data
 	}
 )
 
@@ -44,9 +66,7 @@ const userSlice = createSlice({
 		},
 		logOut(state) {
 			localStorage.removeItem('userToken')
-			state.token = null
-			state.data = null
-			return state
+			return {...state, order: null, orders : null, token: null, data: null}
 		},
 
 		setOrder(state,action) {
@@ -82,7 +102,7 @@ const userSlice = createSlice({
 		[fetchUserOrders.rejected]:(state)=>{
 			state.isLoading = false
 			state.error = 'Error happened while user data loading. Relogin plz'
-		}
+		},
 	}
 })
 

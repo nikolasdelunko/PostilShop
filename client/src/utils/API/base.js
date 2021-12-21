@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 // import { toastr } from 'react-redux-toastr'
 import axios from 'axios'
 // import i18n from '../i18n'
@@ -82,82 +80,44 @@ export class FetchData {
 		return this.sendRequest(url, requestParams, showError)
 	}
 
-	sendRequest(url, requestParams, showError) {
-		return new Promise((resolve, reject) => {
-			axios(url, requestParams)
-				.then(result => resolve(result))
-				.catch(reason => {
-					if (showError) {
-						this.requestFailed(reason, showError, url)
-					}
-					if (reason && reason.response) {
-						const { data } = reason.response
-						console.log('RESPONSE',data)
-						// reject(new Error(data && data.message))
-
-						//!! Прокидываю объект дальше, нас лучай, если сервер вернул ошибки (типа валидация форм)
-						reject(data)
-					}
-					else reject(reason)
-				})
-		})
-	}
-
-	requestFailed(reason, showError, url) {
-		const { response } = reason
+	async	sendRequest(url, requestParams, showError) {
+		try{
+			const result = await axios(url, requestParams)
+			return {isError: false, data: result.data}
+		}
+		catch(catchedErr)
+		{
+			// eslint-disable-next-line no-console
+			console.log('catchedErr',catchedErr.response.data, typeof catchedErr.response.data)
 		
-		// eslint-disable-next-line no-console
-		// console.log('AAAALLLL', response)
+			if(showError)
+			{
+				this.myRequestFailed(catchedErr, showError, url)
+			}
+			//можно прикрутить отправку на сервер или setry.io
 
-		const message = response && response.data && response.data.message
-		if (message) {
-		// 	toastr.light(
-		// 		i18n.isInitialized ? i18n.t('toastr.error') : 'Помилка',
-		// 		message,
-		// 		toastrErrorOptions
-		// 	)
-		// } else if (i18n.isInitialized) {
-		// 	toastr.light(
-		// 		i18n.t('toastr.error'),
-		// 		i18n.t('toastr.somethingWrong'),
-		// 		toastrErrorOptions
-		// 	)
-			// eslint-disable-next-line no-console
-			console.log('PIZDEC', response)
-			snackActions.warning(message)
-		}
-		if (
-			response &&
-			(
-				response.status === 404 ||
-				response.status === 500 ||
-				(response.status === 401 &&
-					showError &&
-					!url.includes(`${process.env.REACT_APP_API_PATH}/auth`)))
-		) {
-			// history.push({
-			//   pathname: '/error',
-			//   state: {
-			//     message: response.data && response.data.message,
-			//     status: response.status
-			//   }
-			// })
-			// eslint-disable-next-line no-console
-			console.log('AHTUNG', response)
-			snackActions.warning('Server error, reload plz!')
+			//при желании их можно получать и обрабатывать на месте без try-catch
+			return {isError: true, errors: typeof catchedErr.response.data === 'object' ? catchedErr.response.data : {}}
 		}
 	}
+
+	// eslint-disable-next-line no-unused-vars
+	myRequestFailed(reason, showError, url) {
+		const { response } = reason
+		const messages = response && response.data && typeof response.data === 'object' && response.data
+		if(Object.keys(messages).length && showError)
+		{
+			Object.values(messages).map(message => snackActions.warning(message))
+		}
+
+		//лучше сделать редирект на 404 или что-то типа
+
+		// eslint-disable-next-line no-console
+		console.log('errors',reason)
+	}
+
 }
 
 const api = new FetchData()
-// const routedApi = new FetchData(process.env.REACT_APP_API_PATH)
 
-// export default FetchData
 export default api
-// export { routedApi }
-
-
-
-
-
-

@@ -1,7 +1,5 @@
 import {FetchData} from './base'
 
-const api = new FetchData()
+const api = new FetchData('/api/links')
 
-const getLinks = () => api.get('/api/links')
-
-export default {getLinks}
+export const getLinks = () => api.get('')

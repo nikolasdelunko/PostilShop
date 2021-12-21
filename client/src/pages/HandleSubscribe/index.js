@@ -23,19 +23,15 @@ const HandleSubscribe = () => {
 	const history = useHistory()
 	const [ subscribeStatus, setSubscribeStatus ] = useState(null)
 	const handleSubscription = async (email) => {
-		try {
-			const getSubscriptionInfo = await getSubscriptionByEmail(email)
-			if (getSubscriptionInfo.status === 200) {
-				const status = !getSubscriptionInfo.data.enabled
-				const changeRes = await changeSubscription({ email, enabled: status })
-				if (changeRes.status === 200) {
-					status === true
-						? setSubscribeStatus({ status: 'You successfully subscribed!' })
-						: setSubscribeStatus({ status: 'You successfully unsubscribed!' })
-				}
+		const getSubscriptionInfo = await getSubscriptionByEmail(email)
+		if (!getSubscriptionInfo.isError) {
+			const status = !getSubscriptionInfo.data.enabled
+			const changeRes = await changeSubscription({ email, enabled: status })
+			if (!changeRes.isError) {
+				status === true
+					? setSubscribeStatus({ status: 'You successfully subscribed!' })
+					: setSubscribeStatus({ status: 'You successfully unsubscribed!' })
 			}
-		} catch (er) {
-			setSubscribeStatus({ status: er.response.data.message })
 		}
 	}
 

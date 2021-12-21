@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { useSelector, useDispatch } from 'react-redux'
+import {useCallback} from 'react'
+import { useSelector, useDispatch} from 'react-redux'
 import { userOperations, userSelectors} from '../../store/user'
 import { loginUser, registerUser } from '../API/userAPI'
 import {subscribeTemlate} from '../emailTemplates'
@@ -9,12 +10,12 @@ import {snackActions} from '../configurators/SnackBarUtils'
 const useAuth = () => {
 	const dispatch = useDispatch()
 	const token = useSelector(userSelectors.getToken())
-	const checkToken = () => 
+	const checkToken = useCallback(() => 
 	{
 		if (token) {
 			axios.defaults.headers.Authorization = token
 			dispatch(userOperations.fetchUser())
-			dispatch(userOperations.fetchUserOrders())
+			dispatch(userOperations.fetchUserOrders()) //и че он тут делает?!
 		} else {
 			axios.defaults.headers.Authorization = null
 			/*if setting null does not remove `Authorization` header then try     
@@ -22,7 +23,7 @@ const useAuth = () => {
 				*/
 		}
 		return token
-	}
+	},[token])
 
 	const login = async (values) => {
 		let formData = {...values}
@@ -30,12 +31,13 @@ const useAuth = () => {
 		delete (formData.rememberMe)
 	
 		const res = await loginUser(formData)
-		if (res.data) {
+		if (!res.isError) {
 			//save token to store (and localStorage)
 			dispatch(userOperations.setToken({token: res.data.token, rememberMe}))
 			dispatch(modalActions.modalToggle(false))
 			snackActions.success('You successfully Logged In')
 		}
+		return res
 	}
 
 	const register = async (values) => {
@@ -48,9 +50,13 @@ const useAuth = () => {
 		delete (formData.confirmPass)
 		delete (formData.rememberMe)
 		const res = await registerUser(formData)
-		if (res.data) {
+		if (!res.isError) {
 			snackActions.success('You successfully registered')
-			await login({loginOrEmail,password,rememberMe})
+			return await login({loginOrEmail,password,rememberMe})
+		}
+		else
+		{
+			return res
 		}
 	}
 	return {checkToken, login, register}

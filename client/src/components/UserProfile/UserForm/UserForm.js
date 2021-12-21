@@ -2,7 +2,7 @@ import React from 'react'
 import * as Yup from 'yup'
 import { Container, Grid, Typography, Box } from '@mui/material'
 import { Form, Formik } from 'formik'
-import { phoneRegExp } from './data/Regex'
+import { phoneRegExp, zipRegExp } from './data/Regex'
 import { userOperations, userSelectors } from '../../../store/user'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateData, updatePassword } from '../../../utils/API/userAPI'
@@ -12,7 +12,7 @@ import SelectInput from './FormUI/SelectInput'
 import ButtonInput from './FormUI/ButtonInput'
 import Loader from '../../UI/Loader/Loader'
 import CheckboxInput from './FormUI/CheckboxInput'
-import useSnack from '../../../utils/customHooks/useSnack'
+import {snackActions} from '../../../utils/configurators/SnackBarUtils'
 
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -25,25 +25,25 @@ const FORM_VALIDATION = Yup.object().shape({
 	address: Yup.string(),
 	city: Yup.string(),
 	country: Yup.string(),
-	zip: Yup.string().matches(/^[0-9]+$/, 'Must be only numbers')
+	zip: Yup.string()
+		.matches(zipRegExp, 'Must be only numbers')
 		.max(6, 'Not valid zip code')
 		.min(4, 'Not valid zip code'),
 	oldPass: Yup.string(),
 	password: Yup.string()
 		.min(7, 'Password must be 7 digits minimum')
 		.max(30, 'Password must be 30 digits maximum'),
-	confirmPass: Yup.string().oneOf([Yup.ref('password')], 'Passwords do not match').when('password', {
-		is: value => value && value.length > 0,
-		then: Yup.string().required('Field is required')
-	}),
+	confirmPass: Yup.string()
+		.oneOf([Yup.ref('password')], 'Passwords do not match').when('password', {
+			is: value => value && value.length > 0,
+			then: Yup.string().required('Field is required')
+		}),
 	subscribe: Yup.bool()
 
 })
 
 const UserForm = () => {
-	const {handleSnack} = useSnack()
 	const dispatch = useDispatch()
-
 	const user = useSelector(userSelectors.getData())
 
 	const INITIAL_FORM_STATE = {
@@ -100,39 +100,39 @@ const UserForm = () => {
 											subscribe: values.subscribe
 
 										}
-										updateData(update).then(() => {
-
-											dispatch(userOperations.setNewData(update))
-											handleSnack({ message: 'Successfully changed', style: 'success' })
-										}).catch((err) => {
-											const message = err.response.data.password ? err.response.data.password : 'Something wrong with your data'
-											handleSnack({ message, style: 'warning' })
+										updateData(update).then(resp => {
+											if(!resp.isError)
+											{
+												dispatch(userOperations.setNewData(update))
+												snackActions.success('Successfully changed')
+											}
 										})
 									}
 
-
 									if(values.oldPass.length> 2 && values.password === ''){
-
-										handleSnack({message: 'Enter new password', style: 'warning'})
+										snackActions.warning('Enter new password')
 										// eslint-disable-next-line max-len
 									} else if (values.oldPass.length > 2 && values.password.length > 2) {
 
 										const passwords = {
-											'password': values.oldPass,
-											'newPassword': values.password
+											password: values.oldPass,
+											newPassword: values.password
 										}
+										console.log('passwords',passwords)
 										// eslint-disable-next-line no-unused-vars,no-mixed-spaces-and-tabs
 										updatePassword(passwords)
 											.then((res)=>{
+												console.log('passwords res',res)
 												if(res.data.password){
-													handleSnack({message: 'Wrong Password', style: 'warning'})
+													snackActions.warning('Wrong Password')
 												} else if(res.data.message){
-													handleSnack({message: 'Successfully changed', style: 'success'})
+													snackActions.success('Successfully changed')
 												}
-											}).catch((err) => {
-												const message = err.response.data.password ? err.response.data.password : 'Something wrong with your data'
-												handleSnack({ message, style: 'warning' })
 											})
+											// .catch((err) => {
+											// 	const message = err.response.data.password ? err.response.data.password : 'Something wrong with your data'
+											// 	handleSnack({ message, style: 'warning' })
+											// })
 									}
 
 
@@ -288,9 +288,7 @@ const UserForm = () => {
 
 												<Grid item xs={12} sx={{ textAlign: 'center', mt: '16px' }}>
 
-													<ButtonInput
-
-													>
+													<ButtonInput>
 														Save Changes
 													</ButtonInput>
 												</Grid>

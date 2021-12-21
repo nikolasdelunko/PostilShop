@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from 'react'
-import API from '../API/categoriesApi'
+import { useEffect, useState } from 'react'
+import {getCategories} from '../API/categoriesApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { categorySelectors } from '../../store/category'
 import * as categoryActions from '../../store/category/categorySlice'
@@ -49,8 +48,11 @@ const UseCategoryTree = () => {
 
 	useEffect(() => {
 		if (category.length) return
-		API.getCategories().then(res => {
-			setCategory(res.data)
+		getCategories().then(res => {
+			if(!res.isError)
+			{
+				setCategory(res.data)
+			}
 		})
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])

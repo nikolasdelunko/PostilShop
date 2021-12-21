@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import {Box} from '@mui/material'
-import categoriesAPI from '../../utils/API/categoriesApi'
+import {getCategories} from '../../utils/API/categoriesApi'
 import CategorySearchItem from './CategorySearchItem'
 
 const CategorySearch = () => {
 
 	const [catalogs, setCatalogs] = useState([])
 	const getCategoryFilters = async () => {
-		const catalogRes = await categoriesAPI.getCategories()
-		setCatalogs(catalogRes.data)
+		const catalogRes = await getCategories()
+		if(!catalogRes.isError)
+		{
+			setCatalogs(catalogRes.data)
+		}
 	}
 
 	useEffect(()=> {

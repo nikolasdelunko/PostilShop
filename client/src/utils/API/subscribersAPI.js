@@ -9,7 +9,7 @@ export const addSubscribe = (email) => api.post('',{
 	letterHtml: subscribeTemlate(email),
 })
 
-export const getSubscriptionByEmail = (email) => api.get(`${email}`)
+export const getSubscriptionByEmail = (email, showErrors = true) => api.get(`${email}`,'',{},showErrors)
 
 export const changeSubscription = (obj) => api.put(
 	`email/${obj.email}`,{

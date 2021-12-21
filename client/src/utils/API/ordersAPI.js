@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+import {FetchData} from './base'
+
+const api = new FetchData('/api/orders')
+
 const placeOrder = (newOrder) => axios.post('/api/orders', newOrder)
 // please look up in docs what to put in newOrder
 
@@ -12,7 +16,7 @@ const cancelOrder = (orderId) => axios.put(`/orders/cancel/${orderId}`)
 
 const deleteOrder = (orderId) => axios.delete(`/orders/${orderId}`)
 
-const getCustomerOrders = () => axios.get('/orders')
+export const getCustomerOrders = () => api.get('')
 // gets all the orders of a current customer. Requires authorization
 
 const getOrderByOrderNo = (orderNo) => axios.get(`/orders/${orderNo}`)
@@ -23,6 +27,5 @@ export default {
 	updateOrder,
 	cancelOrder,
 	deleteOrder,
-	getCustomerOrders,
 	getOrderByOrderNo
 }

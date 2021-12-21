@@ -1,7 +1,5 @@
-import axios from 'axios'
+import {FetchData} from './base'
 
-const getSizes = () => axios('/api/sizes')
+const api = new FetchData('/api/sizes')
 
-export default {
-	getSizes,
-}
+export const getSizes = () => api.get('')

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ToggleButtonGroup,ToggleButton 	} from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
-import colorAPI from '../../utils/API/colorAPI'
+import {getColors} from '../../utils/API/colorAPI'
 import {useSelector} from 'react-redux'
 import {filterSelectors} from '../../store/filter'
 import useFilterHandler from '../../utils/customHooks/useFilterHandler'
@@ -13,8 +13,11 @@ const ColorSearch = () => {
 	const selectedColors = useSelector(filterSelectors.getColors())
 
 	const getColorFilters = async () => {
-		const res = await colorAPI.getColors()
-		setColors(res.data)
+		const res = await getColors()
+		if(!res.isError)
+		{
+			setColors(res.data)
+		}
 	}
 
 	useEffect( ()=>{

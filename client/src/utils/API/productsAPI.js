@@ -1,13 +1,17 @@
 import axios from 'axios'
 
+
+import {FetchData} from './base'
+
+const api = new FetchData('/api/products')
+
 const getAllProducts = (params = '') =>
 	axios.get(`/api/products?${params}`).then(res => res.data)
 
 const getOneProduct = (productId) =>
 	axios.get(`/api/products/${productId}`)
 
-const getMinMaxPrice = () =>
-	axios.get('/api/products/minMaxPrice')
+export const getMinMaxPrice = () => api.get('/minMaxPrice')
 
 const getSizesNew = (colorId, productId) =>
 	axios.get(`/api/products/variant/color/${colorId}/${productId}`)

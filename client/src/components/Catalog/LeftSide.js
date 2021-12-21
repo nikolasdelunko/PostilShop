@@ -1,13 +1,11 @@
 import React from 'react'
 import {Box} from '@mui/material'
-
 import ColorSearch from './ColorSearch'
 import CatalogAccordion from './CatalogAccordion'
 import PriceRange from './PriceRange'
 import SearchSize from './SearchSize'
 import { useSelector } from 'react-redux'
 import {filterSelectors} from '../../store/filter'
-// import SearchFabrik from './SearchFabrik'
 
 
 const LeftSide = () => {
@@ -30,7 +28,7 @@ const LeftSide = () => {
 			</Box>
 			<Box>
 				<CatalogAccordion
-					expanded={!!size.length}
+					expanded={size.length > 0}
 					title={'size'}
 				>
 					<SearchSize />
@@ -38,16 +36,13 @@ const LeftSide = () => {
 			</Box>
 			<Box>
 				<CatalogAccordion
-					expanded={!!color.length}
+					expanded={color.length > 0}
 					title={'color'}
 					withBottomBorder={false} 
 				>
 					<ColorSearch />
 				</CatalogAccordion>	
 			</Box>
-			{/* <Box>
-				<CatalogAccordion expanded={false} title={'fabric'}><SearchFabrik /></CatalogAccordion>	
-			</Box> */}
 		</Box>
 	)
 }
