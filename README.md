@@ -19,8 +19,5 @@ Final Project - Online shop "Postil' bedding"
 
 
 ## Link to deployed project:
-... to be added later
+https://fp-postil-bedding.herokuapp.com/
 
-
-## Project presentation:
-... to be added later
