@@ -18,17 +18,6 @@ Final Project - Online shop "Postil' bedding"
 13. [Travis CI](https://www.travis-ci.com/)
 
 
-## Team members:
-1. [Yaroslav Verbitsky](https://github.com/nikolasdelunko)
-2. [Darina Otroshenko](https://github.com/OtroshenkoDarina)
-3. [Elizabeth Rudaya](https://github.com/lizarudayaa)
-4. [Igor Nikonov](https://github.com/IggyDev34)
-5. [Vitaliy Gukalov](https://github.com/Vitaliy-1809)
-6. [Andriy Litvinenko](https://github.com/Shootka)
-7. [Daniil Khlyvniuk](https://github.com/Daniil-Khlyvniuk)
-8. [Aleksandr Mayboroda](https://github.com/AlexMaybee)
-
-
 ## Link to deployed project:
 ... to be added later
 
